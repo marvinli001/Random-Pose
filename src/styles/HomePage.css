@@ -1,0 +1,38 @@
+.home-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+    max-width: 800px;
+    width: 100%;
+  }
+  
+  .category-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .category-item:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.05);
+  }
+  .version-info {
+    margin-top: auto; /* 将版本信息推到底部 */
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    color: #000000; /* 灰色文字，不太显眼但足够清晰 */
+  }
