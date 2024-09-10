@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import HomePage from './components/HomePage';
 import CategoryPage from './components/CategoryPage';
 import Navigation from './components/Navigation';
+import AdminLogin from './components/AdminLogin';
+import AdminPanel from './components/AdminPanel';
 import './styles/App.css';
 
 function App() {
@@ -18,6 +20,8 @@ function App() {
               <CategoryPage />
             </>
           } />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminPanel />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
