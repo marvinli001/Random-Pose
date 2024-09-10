@@ -8,10 +8,9 @@ const categories = [
   { id: 3, name: 'Cosplay' },
   { id: 4, name: 'JK' },
   { id: 5, name: '摆姿' },
-  { id: 6, name: '人像' },
-  { id: 7, name: '汉服' },
-  { id: 8, name: '和服' },
-  { id: 9, name: '徒步' },
+  { id: 6, name: '汉服' },
+  { id: 7, name: '和服' },
+  { id: 8, name: '徒步' },
   // 可以添加更多类别...
 ];
 

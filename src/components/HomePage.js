@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/HomePage.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCodeBranch } from '@fortawesome/free-solid-svg-icons';
 
 const categories = [
   { id: 1, name: '日常' },
@@ -8,13 +10,12 @@ const categories = [
   { id: 3, name: 'Cosplay' },
   { id: 4, name: 'JK' },
   { id: 5, name: '摆姿' },
-  { id: 6, name: '人像' },
-  { id: 7, name: '汉服' },
-  { id: 8, name: '和服' },
-  { id: 9, name: '徒步' },
+  { id: 6, name: '汉服' },
+  { id: 7, name: '和服' },
+  { id: 8, name: '徒步' },
 ];
 
-const BUILD_VERSION = 'v103562';
+const BUILD_VERSION = '60d809b';
 function HomePage() {
   return (
     <div className="home-page">
@@ -27,7 +28,7 @@ function HomePage() {
         ))}
       </div>
       <div className="version-info">
-        Build: {BUILD_VERSION}
+        BuildVersion: <FontAwesomeIcon icon={faCodeBranch} /> {BUILD_VERSION}
       </div>
     </div>
   );
