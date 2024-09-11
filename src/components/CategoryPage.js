@@ -13,6 +13,7 @@ function CategoryPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isChangingImage, setIsChangingImage] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const loadRandomImage = useCallback(async () => {
     setIsChangingImage(true);
@@ -44,6 +45,11 @@ function CategoryPage() {
     setLoading(false);
   }, [id]);
 
+
+  const toggleFullscreen = () => {
+    setIsFullscreen(!isFullscreen);
+  };
+
   const debouncedLoadRandomImage = debounce(loadRandomImage, 300);
 
   useEffect(() => {
@@ -63,12 +69,13 @@ function CategoryPage() {
 
   return (
     <div className="category-page">
-      <div className="image-container">
+      <div className={`image-container ${isFullscreen ? 'fullscreen' : ''}`}>
         {currentImage && (
           <img
             src={currentImage}
             alt="Random Pose"
             className={`image ${isChangingImage ? 'fade-out' : ''}`}
+            onClick={toggleFullscreen}
           />
         )}
         {nextImage && (
@@ -85,6 +92,11 @@ function CategoryPage() {
           </div>
         )}
         {error && <div className="error-overlay">{error}</div>}
+        {isFullscreen && (
+          <button className="close-fullscreen" onClick={toggleFullscreen}>
+            ×
+          </button>
+        )}
       </div>
       <div className="button-container">
         <button onClick={() => navigate('/')} className="home-button">
