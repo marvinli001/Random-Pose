@@ -2,13 +2,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getRandomImageForCategory, preloadCategoryImages } from '../services/imageService';
-import { debounce } from 'lodash';  // 确保已安装 lodash
+import { debounce } from 'lodash';
 import '../styles/CategoryPage.css';
 
 function CategoryPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState('');
+  const [nextImage, setNextImage] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isChangingImage, setIsChangingImage] = useState(false);
@@ -19,17 +20,28 @@ function CategoryPage() {
     try {
       const imageUrl = await getRandomImageForCategory(id);
       if (imageUrl) {
-        setCurrentImage(imageUrl);
+        setNextImage(imageUrl);
+        const img = new Image();
+        img.onload = () => {
+          setCurrentImage(imageUrl);
+          setNextImage('');
+          setIsChangingImage(false);
+        };
+        img.onerror = () => {
+          setError('图片加载失败');
+          setIsChangingImage(false);
+        };
+        img.src = imageUrl;
       } else {
         setError('该分类没有图片或文件不存在');
+        setIsChangingImage(false);
       }
     } catch (error) {
       console.error('Failed to load image:', error);
       setError('加载图片失败');
-    } finally {
       setIsChangingImage(false);
-      setLoading(false);
     }
+    setLoading(false);
   }, [id]);
 
   const debouncedLoadRandomImage = debounce(loadRandomImage, 300);
@@ -37,7 +49,6 @@ function CategoryPage() {
   useEffect(() => {
     setLoading(true);
     loadRandomImage();
-    // 预加载该类别的所有图片
     preloadCategoryImages(id).catch(console.error);
   }, [id, loadRandomImage]);
 
@@ -50,22 +61,30 @@ function CategoryPage() {
     );
   }
 
-  if (error) {
-    return (
-      <div className="error-container">
-        <p>{error}</p>
-        <button onClick={() => navigate('/')} className="home-button">
-          返回主页
-        </button>
-      </div>
-    );
-  }
-
   return (
     <div className="category-page">
       <div className="image-container">
-        {currentImage && <img src={currentImage} alt="Random Pose" className="image" />}
-        {isChangingImage && <div className="loading-overlay">正在加载新图片...</div>}
+        {currentImage && (
+          <img
+            src={currentImage}
+            alt="Random Pose"
+            className={`image ${isChangingImage ? 'fade-out' : ''}`}
+          />
+        )}
+        {nextImage && (
+          <img
+            src={nextImage}
+            alt="Next Random Pose"
+            className={`image next-image ${isChangingImage ? 'fade-in' : ''}`}
+          />
+        )}
+        {isChangingImage && (
+          <div className="loading-overlay">
+            <div className="loading-spinner"></div>
+            <p>正在加载新图片...</p>
+          </div>
+        )}
+        {error && <div className="error-overlay">{error}</div>}
       </div>
       <div className="button-container">
         <button onClick={() => navigate('/')} className="home-button">
